@@ -94,9 +94,9 @@ To test the application from a POSTman or any other testing platform, follow the
 	```bash
 	[POST] http://localhost:8000/api/v1/transaction
 
-	| Key 	 | Value    |
-	| :-----: | :------:	|
-	| type 	 | string   |
+	| Key     | Value    |
+	| :-----: | :------: |
+	| type    | string   |
 	| amount  | decimal  |
 	```
 
