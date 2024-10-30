@@ -13,7 +13,15 @@ class TransactionController extends Controller
 {
     public function store(TransactionRequest $request)
     {
-        $user   = auth()->user();
+        $user = User::first();
+        if(empty($user)){
+            // Run the specific seeder
+            Artisan::call('db:seed', [
+                '--class' => 'DatabaseSeeder'
+            ]);
+        }
+        $user = User::first();
+
         $type   = $request->type;
         $amount = $request->amount;
 
@@ -38,13 +46,5 @@ class TransactionController extends Controller
         ]);
 
         return response()->json(['transaction' => $transaction], 201);
-    }
-
-    public function index(Request $request)
-    {
-        $user         = auth()->user();
-        $transactions = $user->transactions()->orderBy('created_at', 'desc')->get();
-
-        return response()->json(['transactions' => $transactions]);
     }
 }
