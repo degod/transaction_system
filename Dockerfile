@@ -1,29 +1,39 @@
-# Base image
-FROM php:8.1-fpm
+# Use PHP 8.3 as the base image
+FROM php:8.3-fpm
 
-# Install dependencies
+# Set working directory
+WORKDIR /var/www
+
+# Install system dependencies and Nginx
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    libzip-dev \
+    nginx \
     zip \
     unzip \
     git \
-    && docker-php-ext-install pdo pdo_mysql
+    curl \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Copy Nginx configuration file
+COPY ./nginx/nginx.conf /etc/nginx/sites-available/default
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy application code
+# Copy application code to the working directory
 COPY . /var/www
-WORKDIR /var/www
 
-# Install PHP dependencies
-RUN composer install
-
-# Set permissions
+# Set ownership and permissions
 RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 
-# Expose port
-EXPOSE 9000
+# Expose ports
+EXPOSE 80
 
-CMD ["php-fpm"]
+# Start Nginx and PHP-FPM
+CMD service nginx start && php-fpm

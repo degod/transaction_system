@@ -7,31 +7,43 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www
-    networks:
-      - app-network
+      - ./vendor:/var/www/vendor
     environment:
       - DB_HOST=db
       - DB_PORT=3306
       - DB_DATABASE=transaction_system
-      - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+    depends_on:
+      - db
+    networks:
+      - app-network
+    ports:
+      - "8000:80"  # Map port 80 from Nginx to 8000 on localhost
+
   db:
-    image: mysql:8
+    image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: transaction_system
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: secret
     volumes:
       - dbdata:/var/lib/mysql
     networks:
       - app-network
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: secret
     ports:
-      - "8080:80"
+      - "8081:80"  # Changed from 8080 to 8081
+    depends_on:
+      - db
     networks:
       - app-network
 
@@ -41,3 +53,4 @@ networks:
 
 volumes:
   dbdata:
+    driver: local
