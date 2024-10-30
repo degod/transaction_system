@@ -14,7 +14,6 @@ class BalanceController extends Controller
     {
         $user = User::first();
         if(empty($user)){
-            // Run the specific seeder
             Artisan::call('db:seed', [
                 '--class' => 'DatabaseSeeder'
             ]);
