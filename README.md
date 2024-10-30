@@ -36,7 +36,7 @@ Before you start, ensure you have the following installed:
 	cd transaction_system/
 	```
 
-3. **Start the application with Laravel Sail:**
+3. **Start the application in the docker container:**
 
 	```bash
 	docker-compose up --build -d
@@ -48,16 +48,34 @@ Before you start, ensure you have the following installed:
 	docker-compose exec app bash
 	```
 
-5. **Completing the setup:**
-
-	```bash
-	php artisan migrate:fresh && php artisan test
-	```
-
-6. **Exiting container shell:**
+5. **Exiting container shell:**
 
 	```bash
 	exit
+	```
+
+6. **To run code quality fix (run outside container):**
+
+	```bash
+	docker-compose run --rm code-fix
+	```
+
+7. **To run code quality check only (run outside container):**
+
+	```bash
+	docker-compose run --rm code-check
+	```
+
+8. **To run code style check only (run outside container):**
+
+	```bash
+	docker-compose run --rm style-check
+	```
+
+9. **To run phpunit test (run outside container):**
+
+	```bash
+	docker-compose run --rm test
 	```
 
 

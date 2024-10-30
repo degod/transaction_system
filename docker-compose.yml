@@ -77,6 +77,16 @@ services:
     depends_on:
       - app
 
+  test:
+    image: transaction_system-app
+    command: /bin/sh -c "php artisan test"
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+    depends_on:
+      - app
+
 networks:
   app-network:
     driver: bridge
