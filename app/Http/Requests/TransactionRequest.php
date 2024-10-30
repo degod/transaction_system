@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,7 +24,7 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|string|in:deposit,withdrawal',
+            'type'   => 'required|string|in:deposit,withdrawal',
             'amount' => 'required|numeric|min:0.01',
         ];
     }

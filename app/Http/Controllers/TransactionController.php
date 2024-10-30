@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
@@ -11,8 +13,8 @@ class TransactionController extends Controller
 {
     public function store(TransactionRequest $request)
     {
-        $user = auth()->user();
-        $type = $request->type;
+        $user   = auth()->user();
+        $type   = $request->type;
         $amount = $request->amount;
 
         // Calculate the new balance
@@ -29,9 +31,9 @@ class TransactionController extends Controller
 
         // Create transaction record
         $transaction = Transaction::create([
-            'user_id' => $user->id,
-            'type' => $type,
-            'amount' => $amount,
+            'user_id'       => $user->id,
+            'type'          => $type,
+            'amount'        => $amount,
             'balance_after' => $newBalance,
         ]);
 
@@ -40,7 +42,7 @@ class TransactionController extends Controller
 
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $user         = auth()->user();
         $transactions = $user->transactions()->orderBy('created_at', 'desc')->get();
 
         return response()->json(['transactions' => $transactions]);
