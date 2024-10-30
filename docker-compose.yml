@@ -47,6 +47,36 @@ services:
     networks:
       - app-network
 
+  code-fix:
+    image: transaction_system-app
+    command: /bin/sh -c "vendor/bin/rector process && php vendor/bin/php-cs-fixer fix"
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  code-check:
+    image: transaction_system-app
+    command: /bin/sh -c "vendor/bin/rector process --dry-run"
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  style-check:
+    image: transaction_system-app
+    command: /bin/sh -c "php vendor/bin/php-cs-fixer fix --dry-run"
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+    depends_on:
+      - app
+
 networks:
   app-network:
     driver: bridge
