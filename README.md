@@ -79,6 +79,45 @@ Before you start, ensure you have the following installed:
 	```
 
 
+## Testing Project from POSTman (or any API test platform)
+To test the application from a POSTman or any other testing platform, follow the steps below:
+
+1. Follow the steps above to get the application up and running on your local system
+2. Make sure your `.env` parameters are in place (take a queue from `.env.example` if you don't have a `.env`)
+3. You need to copy the `API_KEY` from your `.env` for use as token during your testing
+4. Add the `API_KEY` you have copied as a header variable in POSTman (for instance)
+5. Now, feel free to add any of the below routes:
+	```bash
+	[GET] http://localhost:8000/api/v1/balance
+	```
+	or
+	```bash
+	[POST] http://localhost:8000/api/v1/transaction
+
+	| Key 	 | Value    |
+	| :-----: | :------:	|
+	| type 	 | string   |
+	| amount  | decimal  |
+	```
+
+
+## Testing using curl command
+The below curl commands can also be used after following the instructions to get the app up and running on docker:
+
+- For Balance:
+	```bash
+	curl --location 'http://localhost:8000/api/v1/balance' \
+	--header 'X-API-KEY: ••••••'
+	```
+- For Transaction:
+	```bash
+	curl --location 'http://localhost:8000/api/v1/transaction' \
+	--header 'X-API-KEY: ••••••' \
+	--form 'amount="13"' \
+	--form 'type="deposit"'
+	```
+
+
 ## Contributing
 
 If you encounter bugs or wish to contribute, please follow these steps:
