@@ -35,6 +35,9 @@ class TransactionController extends Controller
             return response()->json(['error' => 'Transaction already exists within the last minute'], 409);
         }
 
+        // Lock the user's row for update
+        $user->lockForUpdate()->find($user->id);
+
         // Calculate the new balance
         $newBalance = $type === 'deposit' ? $user->balance + $amount : $user->balance - $amount;
 
