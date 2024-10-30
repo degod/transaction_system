@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class Transaction extends Model
@@ -26,7 +27,7 @@ class Transaction extends Model
      */
     public static function generateUniqueTrxReference($userId, $amount, $type): string
     {
-        return Str::uuid(); // Generate a UUID as the transaction reference
+        return (string) Str::uuid(); // Generate a UUID as the transaction reference
     }
 
     /**

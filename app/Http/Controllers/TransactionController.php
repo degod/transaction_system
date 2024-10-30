@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionRequest;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 class TransactionController extends Controller
@@ -17,7 +16,7 @@ class TransactionController extends Controller
         // Check if any user exists, if not, seed the database
         if (User::count() === 0) {
             Artisan::call('db:seed', [
-                '--class' => 'DatabaseSeeder'
+                '--class' => 'DatabaseSeeder',
             ]);
         }
 
@@ -27,7 +26,7 @@ class TransactionController extends Controller
             return response()->json(['error' => 'No users found'], 404);
         }
 
-        $type = $request->type;
+        $type   = $request->type;
         $amount = $request->amount;
 
         // Check if a recent transaction exists
@@ -55,13 +54,13 @@ class TransactionController extends Controller
 
         // Create transaction record
         $transaction = Transaction::create([
-            'user_id' => $user->id,
-            'type' => $type,
-            'amount' => $amount,
+            'user_id'       => $user->id,
+            'type'          => $type,
+            'amount'        => $amount,
             'balance_after' => $newBalance,
-            'trx_reference' => $trxReference
+            'trx_reference' => $trxReference,
         ]);
 
-        return response()->json(['transaction' => $transaction], 201);
+        return response()->json(['transaction' => $transaction]);
     }
 }

@@ -14,7 +14,7 @@ class BalanceController extends Controller
     {
         if (User::count() === 0) {
             Artisan::call('db:seed', [
-                '--class' => 'DatabaseSeeder'
+                '--class' => 'DatabaseSeeder',
             ]);
         }
         $user = User::first();
